@@ -26,7 +26,7 @@ A single-page marketing splash hosted on GitHub Pages. Single HTML file, inline 
 
 **Sections:** Hero with email capture, The Ritual (concept), The Product (ingredients), The Origin (Na'eeman story), Waitlist CTA, Footer.
 
-**Forms:** Both email signup forms submit to [Formsubmit.co](https://formsubmit.co) for waitlist collection, with a redirect-based thank-you confirmation state.
+**Forms:** Both email signup forms submit to [Formspree](https://formspree.io) for waitlist collection, with a redirect-based thank-you confirmation state.
 
 ## How It Was Built
 
