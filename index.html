@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAIMAN — The After-Dinner Pearl</title>
+<meta name="description" content="NAIMAN. Premium cardamom & saffron pearls. Sugar-free. Silver-coated. The finishing course.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --coral: #E8573A;
+    --coral-deep: #D04A2F;
+    --coral-light: #F07058;
+    --black: #1A1A1A;
+    --black-rich: #111111;
+    --cream: #F5F0EB;
+    --cream-dark: #EDE6DF;
+    --silver: #C0C0C0;
+    --silver-light: #D8D8D8;
+    --text-on-dark: #F5F0EB;
+    --text-on-coral: #FFFFFF;
+    --text-muted: #8A8279;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    color: var(--black);
+    background: var(--cream);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ===== TYPOGRAPHY SYSTEM ===== */
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .sans { font-family: 'Space Grotesk', sans-serif; }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.35s; }
+  .reveal-delay-4 { transition-delay: 0.5s; }
+
+  /* ===== NAVIGATION ===== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.5rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.4s, backdrop-filter 0.4s, padding 0.4s;
+  }
+
+  nav.scrolled {
+    background: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 1rem 2.5rem;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+
+  .nav-cta {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream);
+    opacity: 0.6;
+    transition: opacity 0.3s;
+    cursor: pointer;
+  }
+
+  .nav-cta:hover { opacity: 1; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: var(--black-rich);
+    overflow: hidden;
+  }
+
+  .hero-image-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .hero-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    opacity: 0;
+    animation: fadeIn 1.2s 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+      linear-gradient(to bottom, rgba(17,17,17,0.3) 0%, transparent 30%),
+      linear-gradient(to top, rgba(17,17,17,0.95) 0%, rgba(17,17,17,0.4) 40%, transparent 65%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    padding: 0 clamp(2rem, 6vw, 6rem) clamp(3rem, 8vh, 6rem);
+  }
+
+  .hero-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(4rem, 12vw, 9rem);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    line-height: 0.95;
+    opacity: 0;
+    animation: fadeUp 1s 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.2rem, 2.8vw, 1.8rem);
+    color: var(--cream);
+    opacity: 0;
+    margin-top: clamp(0.75rem, 2vw, 1.5rem);
+    animation: fadeUp 1s 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .hero-signup {
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    display: flex;
+    gap: 0;
+    max-width: 420px;
+    opacity: 0;
+    animation: fadeUp 1s 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .hero-signup input {
+    flex: 1;
+    padding: 0.85rem 1.2rem;
+    background: rgba(245, 240, 235, 0.08);
+    border: 1px solid rgba(245, 240, 235, 0.15);
+    border-right: none;
+    color: var(--cream);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  .hero-signup input::placeholder {
+    color: rgba(245, 240, 235, 0.35);
+  }
+
+  .hero-signup input:focus {
+    background: rgba(245, 240, 235, 0.12);
+    border-color: rgba(245, 240, 235, 0.3);
+  }
+
+  .hero-signup button {
+    padding: 0.85rem 1.8rem;
+    background: var(--coral);
+    border: 1px solid var(--coral);
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+    white-space: nowrap;
+  }
+
+  .hero-signup button:hover {
+    background: var(--coral-deep);
+  }
+
+  /* ===== SECTION SPACING ===== */
+  section {
+    padding: clamp(4rem, 10vw, 8rem) clamp(2rem, 6vw, 6rem);
+  }
+
+  /* ===== THE RITUAL ===== */
+  .ritual {
+    background: var(--cream);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+
+  .ritual-text {
+    max-width: 480px;
+  }
+
+  .section-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    color: var(--black);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-body {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 400px;
+  }
+
+  .ritual-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4/5;
+  }
+
+  .ritual-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .ritual-image:hover img {
+    transform: scale(1.03);
+  }
+
+  /* ===== THE PRODUCT ===== */
+  .product {
+    background: var(--black-rich);
+    color: var(--text-on-dark);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+
+  .product-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+  }
+
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product .section-label {
+    color: var(--coral-light);
+  }
+
+  .product .section-body {
+    color: rgba(245, 240, 235, 0.55);
+  }
+
+  .ingredients {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .ingredient-tag {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(245, 240, 235, 0.12);
+    color: rgba(245, 240, 235, 0.6);
+    transition: border-color 0.3s, color 0.3s;
+  }
+
+  .ingredient-tag:hover {
+    border-color: var(--coral);
+    color: var(--coral-light);
+  }
+
+  /* ===== THE ORIGIN ===== */
+  .origin {
+    background: var(--coral);
+    color: var(--text-on-coral);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .origin-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+
+  .origin .section-label {
+    color: rgba(255,255,255,0.55);
+  }
+
+  .origin .section-title {
+    color: white;
+  }
+
+  .origin .section-body {
+    color: rgba(255,255,255,0.75);
+  }
+
+  .origin-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16/10;
+  }
+
+  .origin-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .origin-image:hover img {
+    transform: scale(1.03);
+  }
+
+  .arabic-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-style: italic;
+    opacity: 0.6;
+    margin-top: 2rem;
+    display: block;
+  }
+
+  /* ===== WAITLIST CTA ===== */
+  .waitlist {
+    background: var(--black-rich);
+    color: var(--text-on-dark);
+    text-align: center;
+    padding: clamp(5rem, 12vw, 10rem) clamp(2rem, 6vw, 6rem);
+  }
+
+  .waitlist-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .waitlist-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+  }
+
+  .waitlist-form {
+    display: flex;
+    gap: 0;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .waitlist-form input {
+    flex: 1;
+    padding: 1rem 1.3rem;
+    background: rgba(245, 240, 235, 0.06);
+    border: 1px solid rgba(245, 240, 235, 0.12);
+    border-right: none;
+    color: var(--cream);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  .waitlist-form input::placeholder {
+    color: rgba(245, 240, 235, 0.3);
+  }
+
+  .waitlist-form input:focus {
+    background: rgba(245, 240, 235, 0.1);
+    border-color: rgba(245, 240, 235, 0.25);
+  }
+
+  .waitlist-form button {
+    padding: 1rem 2rem;
+    background: var(--coral);
+    border: 1px solid var(--coral);
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+    white-space: nowrap;
+  }
+
+  .waitlist-form button:hover {
+    background: var(--coral-deep);
+  }
+
+  /* ===== SECONDARY PRODUCT IMAGE BAND ===== */
+  .product-band {
+    width: 100%;
+    height: clamp(250px, 35vw, 420px);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .product-band img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--black-rich);
+    color: var(--text-on-dark);
+    padding: 3rem clamp(2rem, 6vw, 6rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(245, 240, 235, 0.06);
+  }
+
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  .footer-location {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .footer-social a {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .footer-social a:hover {
+    color: var(--cream);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 860px) {
+    .ritual {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .ritual-text { order: 1; }
+    .ritual-image { order: 2; aspect-ratio: 16/10; }
+
+    .product {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .product-image { order: 1; aspect-ratio: 16/10; }
+    .product-text { order: 2; }
+
+    .origin-inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .origin-text { order: 1; }
+    .origin-image { order: 2; }
+
+    .hero-brand {
+      letter-spacing: 0.12em;
+    }
+
+    footer {
+      flex-direction: column;
+      gap: 1.5rem;
+      text-align: center;
+      align-items: center;
+    }
+
+    .footer-left { align-items: center; }
+
+    .waitlist-form {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .waitlist-form input {
+      border-right: 1px solid rgba(245, 240, 235, 0.12);
+      border-bottom: none;
+    }
+
+    .waitlist-form button {
+      padding: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    nav { padding: 1.2rem 1.5rem; }
+    nav.scrolled { padding: 0.8rem 1.5rem; }
+
+    .hero-signup {
+      flex-direction: column;
+      max-width: 100%;
+    }
+
+    .hero-signup input {
+      border-right: 1px solid rgba(245, 240, 235, 0.15);
+      border-bottom: none;
+    }
+
+    .hero-signup button {
+      padding: 0.85rem;
+    }
+
+    section {
+      padding: clamp(3rem, 8vw, 5rem) 1.5rem;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Naiman</div>
+  <a class="nav-cta" href="#waitlist">Join Waitlist</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-image-wrap">
+    <img
+      src="./assets/dangit_Style_DNA_reference_for_all_prompts_Palette_coral_burn_037104ea-979b-4613-b978-f113fc51379c_1.png"
+      alt="Hand reaching into a matte black tin of NAIMAN pearls on coral background"
+      loading="eager"
+    >
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-brand">Naiman</h1>
+    <p class="hero-tagline">the after-dinner pearl.</p>
+    <form class="hero-signup" action="https://formsubmit.co/naiman@arvindang.com" method="POST">
+      <input type="email" name="email" placeholder="your email" aria-label="Email address" required>
+      <input type="hidden" name="_subject" value="New NAIMAN Waitlist Signup">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="https://arvindang.github.io/naiman/?thanks=1">
+      <input type="hidden" name="_template" value="table">
+      <button type="submit">Notify Me</button>
+    </form>
+  </div>
+</section>
+
+<!-- THE RITUAL -->
+<section class="ritual">
+  <div class="ritual-text">
+    <div class="section-label reveal">The Ritual</div>
+    <h2 class="section-title reveal reveal-delay-1">The pearl you<br>reach for after.</h2>
+    <p class="section-body reveal reveal-delay-2">After coffee. After dinner. After a date you want to remember. Naiman is the modern digestif — not a mint, not a gum, but a finishing course. Cardamom and saffron, crushed and silver-coated, carried in your pocket like a quiet confidence.</p>
+  </div>
+  <div class="ritual-image reveal reveal-delay-2">
+    <img
+      src="./assets/dangit_Style_DNA_reference_for_all_prompts_Palette_coral_burn_6ac3c53a-9f52-4d9e-9ab2-3c813a7a80f7_3.png"
+      alt="Two hands sharing NAIMAN pearls by candlelight"
+      loading="lazy"
+    >
+  </div>
+</section>
+
+<!-- THE PRODUCT -->
+<section class="product">
+  <div class="product-image reveal">
+    <img
+      src="./assets/dangit_Macro_photography_of_saffron_threads_draped_across_a_d_dc23ac49-58f4-42fc-8ec8-31e36bcdb025_0.png"
+      alt="Macro photography of saffron threads and cardamom seeds"
+      loading="lazy"
+    >
+  </div>
+  <div class="product-text">
+    <div class="section-label reveal">The Product</div>
+    <h2 class="section-title reveal reveal-delay-1">You should almost<br>taste the cardamom<br>reading this.</h2>
+    <p class="section-body reveal reveal-delay-2">Whole green cardamom from the Western Ghats. Saffron from the fields of Kashmir. Each seed is coated in a pearlescent silver finish and tumbled smooth. Zero sugar. No artificial flavors. Just centuries of tradition, refined into something that fits in your palm.</p>
+    <div class="ingredients reveal reveal-delay-3">
+      <span class="ingredient-tag">Cardamom</span>
+      <span class="ingredient-tag">Saffron</span>
+      <span class="ingredient-tag">Silver-Coated</span>
+      <span class="ingredient-tag">Sugar-Free</span>
+      <span class="ingredient-tag">Pocket Tin</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT BAND -->
+<div class="product-band reveal">
+  <img
+    src="./assets/dangit_Style_DNA_reference_for_all_prompts_Palette_coral_burn_b4ed38ff-b34b-4d2a-bf74-93f148090a65_0.png"
+    alt="NAIMAN tin spilling pearls onto marble"
+    loading="lazy"
+  >
+</div>
+
+<!-- THE ORIGIN -->
+<section class="origin">
+  <div class="origin-inner">
+    <div class="origin-text">
+      <div class="section-label reveal">The Origin</div>
+      <h2 class="section-title reveal reveal-delay-1">Na'eeman.</h2>
+      <p class="section-body reveal reveal-delay-2">In Arabic tradition, "Na'eeman" is spoken after someone showers, gets a fresh haircut, or renews themselves. It means: may you enjoy this freshness. For centuries along the Silk Road, cardamom was the spice of hospitality — offered after meals as a gesture of care. Naiman carries that gesture forward. A pearl-sized ritual, passed between cultures, refined for the way we live now.</p>
+      <span class="arabic-text reveal reveal-delay-3">نعيماً</span>
+    </div>
+    <div class="origin-image reveal reveal-delay-2">
+      <img
+        src="./assets/dangit_Aerial_photograph_of_terraced_spice_fields_in_Kerala_I_2944d8fb-d5ad-4a78-9682-3a582f206ca6_1.png"
+        alt="Aerial view of terraced spice fields in Kerala at golden hour"
+        loading="lazy"
+      >
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist" id="waitlist">
+  <h2 class="waitlist-title reveal">Be the first to taste it.</h2>
+  <p class="waitlist-sub reveal reveal-delay-1">Launching soon in Chicago. Sign up and we'll let you know.</p>
+  <form class="waitlist-form reveal reveal-delay-2" action="https://formsubmit.co/naiman@arvindang.com" method="POST">
+    <input type="email" name="email" placeholder="your email" aria-label="Email address" required>
+    <input type="hidden" name="_subject" value="New NAIMAN Waitlist Signup">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="https://arvindang.github.io/naiman/?thanks=1">
+    <input type="hidden" name="_template" value="table">
+    <button type="submit">Join Waitlist</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <div class="footer-brand">Naiman</div>
+    <div class="footer-location">Chicago, IL</div>
+  </div>
+  <div class="footer-social">
+    <a href="#" aria-label="Instagram">Instagram</a>
+    <a href="#" aria-label="TikTok">TikTok</a>
+  </div>
+</footer>
+
+<!-- SCROLL REVEAL + NAV SCROLL -->
+<script>
+(function() {
+  // Scroll reveal
+  var reveals = document.querySelectorAll('.reveal');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  reveals.forEach(function(el) { observer.observe(el); });
+
+  // Nav scroll effect
+  var nav = document.querySelector('nav');
+  var scrolled = false;
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 60 && !scrolled) {
+      nav.classList.add('scrolled');
+      scrolled = true;
+    } else if (window.scrollY <= 60 && scrolled) {
+      nav.classList.remove('scrolled');
+      scrolled = false;
+    }
+  }, { passive: true });
+
+  // Thank-you state after form submission
+  if (new URLSearchParams(window.location.search).has('thanks')) {
+    var wt = document.querySelector('.waitlist-title');
+    var ws = document.querySelector('.waitlist-sub');
+    var wf = document.querySelector('.waitlist-form');
+    if (wt) wt.innerHTML = "You\u2019re on the list.";
+    if (ws) ws.textContent = 'We\u2019ll be in touch soon.';
+    if (wf) wf.style.display = 'none';
+    var waitlistSection = document.getElementById('waitlist');
+    if (waitlistSection) waitlistSection.scrollIntoView({ behavior: 'smooth' });
+  }
+})();
+</script>
+
+</body>
+</html>
